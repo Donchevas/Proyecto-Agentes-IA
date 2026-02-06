@@ -1,0 +1,5 @@
+crewai
+langchain-google-vertexai
+python-dotenv
+flask
+gunicorn
