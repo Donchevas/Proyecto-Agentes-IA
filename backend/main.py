@@ -1,9 +1,21 @@
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # <--- IMPORTANTE: Librería para Flask
 from crewai import Agent, Task, Crew, Process
 from langchain_google_vertexai import VertexAI
 
 app = Flask(__name__)
+
+# --- CONFIGURACIÓN DE CORS ---
+# Aquí pegamos tu URL de Streamlit para que Cloud Run le dé permiso
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:8501", 
+            "https://proyecto-agentes-ia-nck7kuc7ud2cveqtkarcvt.streamlit.app"
+        ]
+    }
+})
 
 # Configuración técnica validada
 PROJECT_ID = "iagen-gcp-cwmi"
@@ -70,5 +82,6 @@ def procesar():
     })
 
 if __name__ == "__main__":
+    # Importante para Cloud Run: usar la variable de entorno PORT
     port = int(os.environ.get("PORT", 8080))
-    app.run(debug=True, host="0.0.0.0", port=port)
+    app.run(debug=False, host="0.0.0.0", port=port)
